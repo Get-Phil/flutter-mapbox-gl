@@ -62,6 +62,7 @@ class MapboxMapController extends MapboxGlPlatform
           pitch: camera['tilt'],
         ),
       );
+      _map.on('render', _map.resize);
       _map.on('load', _onStyleLoaded);
     }
     Convert.interpretMapboxMapOptions(_creationParams['options'], this);
