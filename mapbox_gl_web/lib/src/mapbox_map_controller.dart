@@ -62,7 +62,6 @@ class MapboxMapController extends MapboxGlPlatform
           pitch: camera['tilt'],
         ),
       );
-      _map.on('render', _map.resize);
       _map.on('load', _onStyleLoaded);
     }
     Convert.interpretMapboxMapOptions(_creationParams['options'], this);
@@ -391,6 +390,7 @@ class MapboxMapController extends MapboxGlPlatform
   }
 
   void _onStyleLoaded(_) {
+    _map.resize();
     for (final annotationType in annotationOrder) {
       switch (annotationType) {
         case 'AnnotationType.symbol':
