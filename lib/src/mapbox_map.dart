@@ -280,8 +280,12 @@ class _MapboxMapState extends State<MapboxMap> {
     await MapboxMapController.initPlatform(id);
     // see why reszing kills the on map created function (or if it even does at all?)
     _controller.complete(controller);
+    print("creating");
     if (widget.onMapCreated != null) {
+      print("created!");
       widget.onMapCreated!(controller);
+    } else {
+      print("fugged");
     }
   }
 }
