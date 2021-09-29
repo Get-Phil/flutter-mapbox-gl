@@ -10,12 +10,12 @@ dependencies:
     git:
       url: https://github.com/sandrews-inc/flutter-mapbox-gl
       path: mapbox_gl_platform_interface
-      ref: release/0.12.2
+      ref: decent-shrinkage
   mapbox_gl_web:
     git:
       url: https://github.com/sandrews-inc/flutter-mapbox-gl
       path: mapbox_gl_web
-      ref: release/0.12.2
+      ref: decent-shrinkage
 
 dependency_overrides:
   mapbox_gl_platform_interface:
