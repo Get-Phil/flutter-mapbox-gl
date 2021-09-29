@@ -252,6 +252,11 @@ class MapboxMapController extends ChangeNotifier {
   CameraPosition? get cameraPosition => _cameraPosition;
   CameraPosition? _cameraPosition;
 
+  void setCanvasShrinkageCallback(Function() callback) {
+    return MapboxGlPlatform.getInstance(_id)
+        .setCanvasShrinkageCallback(callback);
+  }
+
   final int _id; //ignore: unused_field
 
   Widget buildView(
