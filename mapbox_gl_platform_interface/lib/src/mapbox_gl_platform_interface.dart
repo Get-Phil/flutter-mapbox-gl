@@ -288,4 +288,9 @@ abstract class MapboxGlPlatform {
     throw UnimplementedError(
         'getMetersPerPixelAtLatitude() has not been implemented.');
   }
+
+  void setCanvasShrinkageCallback(Function() callback) {
+    throw UnimplementedError(
+        'setCanvasShrinkageCallback() has not been implemented.');
+  }
 }

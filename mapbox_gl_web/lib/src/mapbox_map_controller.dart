@@ -22,6 +22,7 @@ class MapboxMapController extends MapboxGlPlatform
 
   String? _navigationControlPosition;
   NavigationControl? _navigationControl;
+  Function()? _canvasShrinkage;
 
   @override
   Widget buildView(
@@ -43,6 +44,9 @@ class MapboxMapController extends MapboxGlPlatform
       return _mapElement;
     });
   }
+
+  @override
+  void onCanvasShrinkage(Function() callback) {}
 
   @override
   Future<void> initPlatform(int id) async {
@@ -356,6 +360,11 @@ class MapboxMapController extends MapboxGlPlatform
   }
 
   @override
+  void setCanvasShrinkageCallback(Function() callback) {
+    _canvasShrinkage = callback;
+  }
+
+  @override
   Future<void> setSymbolIconAllowOverlap(bool enable) async {
     //TODO: to implement
     print('setSymbolIconAllowOverlap not implemented yet');
@@ -433,6 +442,10 @@ class MapboxMapController extends MapboxGlPlatform
       var heightMismatch = canvas.clientHeight != container.clientHeight;
       if (widthMismatch || heightMismatch) {
         _map.resize();
+      }
+      if (_canvasShrinkage != null &&
+          (canvas.clientHeight == 0 || canvas.clientWidth == 0)) {
+        _canvasShrinkage!();
       }
     });
   }
