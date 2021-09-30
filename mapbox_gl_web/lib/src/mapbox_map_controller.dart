@@ -23,6 +23,7 @@ class MapboxMapController extends MapboxGlPlatform
   String? _navigationControlPosition;
   NavigationControl? _navigationControl;
   Function()? _canvasShrinkage;
+  bool _didRender = false;
 
   @override
   Widget buildView(
@@ -67,6 +68,7 @@ class MapboxMapController extends MapboxGlPlatform
         ),
       );
       _map.on('render', () {
+        _didRender = true;
         _map.resize();
       });
       _map.on('load', _onStyleLoaded);
@@ -402,6 +404,9 @@ class MapboxMapController extends MapboxGlPlatform
   }
 
   void _onStyleLoaded(_) {
+    if (!_didRender) {
+      _map.resize();
+    }
     for (final annotationType in annotationOrder) {
       switch (annotationType) {
         case 'AnnotationType.symbol':
