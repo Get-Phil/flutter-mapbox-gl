@@ -548,6 +548,11 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
   }
 
   @override
+  void setCanvasShrinkageCallback(Function() callback) {
+    // Not needed in native
+  }
+
+  @override
   Future<void> setSymbolIconAllowOverlap(bool enable) async {
     try {
       await _channel
