@@ -245,8 +245,6 @@ class MapboxMapController extends ChangeNotifier {
     return _mapboxGlPlatform.setCanvasShrinkageCallback(callback);
   }
 
-  final int _id; //ignore: unused_field
-
   Widget buildView(
       Map<String, dynamic> creationParams,
       OnPlatformViewCreatedCallback onPlatformViewCreated,
