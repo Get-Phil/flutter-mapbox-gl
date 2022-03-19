@@ -24,6 +24,8 @@ class MapboxWebGlPlatform extends MapboxGlPlatform
 
   String? _navigationControlPosition;
   NavigationControl? _navigationControl;
+  Function()? _canvasShrinkage;
+  bool _didRender = false;
 
   @override
   Widget buildView(
@@ -55,6 +57,9 @@ class MapboxWebGlPlatform extends MapboxGlPlatform
   }
 
   @override
+  void onCanvasShrinkage(Function() callback) {}
+
+  @override
   Future<void> initPlatform(int id) async {
     await _addStylesheetToShadowRoot(_mapElement);
     if (_creationParams.containsKey('initialCameraPosition')) {
@@ -76,6 +81,7 @@ class MapboxWebGlPlatform extends MapboxGlPlatform
         ),
       );
       _map.on('render', () {
+        _didRender = true;
         _map.resize();
       });
       _map.on('load', _onStyleLoaded);
@@ -299,6 +305,33 @@ class MapboxWebGlPlatform extends MapboxGlPlatform
   @override
   Future<void> removeSource(String sourceId) async {
     _map.removeSource(sourceId);
+    void setCanvasShrinkageCallback(Function() callback) {
+      _canvasShrinkage = callback;
+    }
+  }
+
+  @override
+  Future<void> setSymbolIconAllowOverlap(bool enable) async {
+    //TODO: to implement
+    print('setSymbolIconAllowOverlap not implemented yet');
+  }
+
+  @override
+  Future<void> setSymbolIconIgnorePlacement(bool enable) async {
+    //TODO: to implement
+    print('setSymbolIconIgnorePlacement not implemented yet');
+  }
+
+  @override
+  Future<void> setSymbolTextAllowOverlap(bool enable) async {
+    //TODO: to implement
+    print('setSymbolTextAllowOverlap not implemented yet');
+  }
+
+  @override
+  Future<void> setSymbolTextIgnorePlacement(bool enable) async {
+    //TODO: to implement
+    print('setSymbolTextIgnorePlacement not implemented yet');
   }
 
   CameraPosition? _getCameraPosition() {
@@ -328,6 +361,10 @@ class MapboxWebGlPlatform extends MapboxGlPlatform
       var heightMismatch = canvas.clientHeight != container.clientHeight;
       if (widthMismatch || heightMismatch) {
         _map.resize();
+      }
+      if (_canvasShrinkage != null &&
+          (canvas.clientHeight == 0 || canvas.clientWidth == 0)) {
+        _canvasShrinkage!();
       }
     });
   }

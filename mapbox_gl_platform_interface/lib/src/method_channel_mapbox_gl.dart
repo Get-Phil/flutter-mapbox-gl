@@ -368,6 +368,11 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
   }
 
   @override
+  void setCanvasShrinkageCallback(Function() callback) {
+    // Not needed in native
+  }
+
+  @override
   Future<void> addImageSource(
       String imageSourceId, Uint8List bytes, LatLngQuad coordinates) async {
     try {

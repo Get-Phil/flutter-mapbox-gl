@@ -171,4 +171,9 @@ abstract class MapboxGlPlatform {
     onMapIdlePlatform.clear();
     onUserLocationUpdatedPlatform.clear();
   }
+
+  void setCanvasShrinkageCallback(Function() callback) {
+    throw UnimplementedError(
+        'setCanvasShrinkageCallback() has not been implemented.');
+  }
 }

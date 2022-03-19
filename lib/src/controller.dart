@@ -241,6 +241,20 @@ class MapboxMapController extends ChangeNotifier {
   CameraPosition? _cameraPosition;
 
   final MapboxGlPlatform _mapboxGlPlatform; //ignore: unused_field
+  void setCanvasShrinkageCallback(Function() callback) {
+    return MapboxGlPlatform.getInstance(_id)
+        .setCanvasShrinkageCallback(callback);
+  }
+
+  final int _id; //ignore: unused_field
+
+  Widget buildView(
+      Map<String, dynamic> creationParams,
+      OnPlatformViewCreatedCallback onPlatformViewCreated,
+      Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers) {
+    return MapboxGlPlatform.getInstance(_id)
+        .buildView(creationParams, onPlatformViewCreated, gestureRecognizers);
+  }
 
   /// Updates configuration options of the map user interface.
   ///
