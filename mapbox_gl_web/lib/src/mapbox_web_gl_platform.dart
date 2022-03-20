@@ -677,7 +677,7 @@ class MapboxWebGlPlatform extends MapboxGlPlatform
     _map.addSource(sourceId, {
       "type": 'geojson',
       "data": geojson, // pass the raw string here to avoid errors
-      if (promoteId != null) "promoteId": promoteId
+      "promoteId": '67$sourceId'
     });
   }
 
