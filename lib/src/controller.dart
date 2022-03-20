@@ -579,10 +579,17 @@ class MapboxMapController extends ChangeNotifier {
   /// been notified.
   Future<Symbol> addSymbol(SymbolOptions options, [Map? data]) async {
     final effectiveOptions = SymbolOptions.defaultOptions.copyWith(options);
-    final symbol = Symbol(getRandomString(), effectiveOptions, data);
+    final symbol = Symbol(kIsWeb ? _getRandomNumString() : getRandomString(),
+        effectiveOptions, data);
     await symbolManager!.add(symbol);
     notifyListeners();
     return symbol;
+  }
+
+  String _getRandomNumString() {
+    const charSet = '1234567890';
+    return String.fromCharCodes(Iterable.generate(
+        10, (_) => charSet.codeUnitAt(_random.nextInt(charSet.length))));
   }
 
   /// Adds multiple symbols to the map, configured using the specified custom

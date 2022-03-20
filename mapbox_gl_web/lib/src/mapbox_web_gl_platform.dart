@@ -687,7 +687,10 @@ class MapboxWebGlPlatform extends MapboxGlPlatform
             type: geojsonFeature["geometry"]["type"],
             coordinates: geojsonFeature["geometry"]["coordinates"]),
         properties: geojsonFeature["properties"],
-        id: geojsonFeature["properties"]?["id"] ?? geojsonFeature["id"]);
+        id: kIsWeb
+            ? int.parse(
+                geojsonFeature["properties"]?["id"] ?? geojsonFeature["id"])
+            : geojsonFeature["properties"]?["id"] ?? geojsonFeature["id"]);
   }
 
   FeatureCollection _makeFeatureCollection(Map<String, dynamic> geojson) {
