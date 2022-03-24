@@ -1,4 +1,4 @@
-## 0.15.7, January 13, 2022
+## 0.15.8, January 13, 2022
 * Callbacks added to onFeatureTapped will now also get the position (`Point<double>`) and the location (`LatLng`) of the click passed when called [#798](https://github.com/flutter-mapbox-gl/maps/pull/798) 
 * Fixed layer based feature selection [#765](https://github.com/flutter-mapbox-gl/maps/pull/765)
 * Implement the changePosition function for place_fill example [#778](https://github.com/flutter-mapbox-gl/maps/pull/778)
