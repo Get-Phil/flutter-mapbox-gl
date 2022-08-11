@@ -410,6 +410,23 @@ class MapboxMapController extends ChangeNotifier {
     );
   }
 
+  Future<void> addHeatmapLayer(
+      String sourceId, String layerId, HeatmapLayerProperties properties,
+      {String? belowLayerId,
+      String? sourceLayer,
+      double? minzoom,
+      double? maxzoom}) async {
+    await _mapboxGlPlatform.addHeatmapLayer(
+      sourceId,
+      layerId,
+      properties.toJson(),
+      belowLayerId: belowLayerId,
+      sourceLayer: sourceLayer,
+      minzoom: minzoom,
+      maxzoom: maxzoom,
+    );
+  }
+
   /// Updates user location tracking mode.
   ///
   /// The returned [Future] completes after the change has been made on the

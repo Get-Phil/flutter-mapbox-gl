@@ -328,6 +328,10 @@ abstract class MapboxGlPlatform {
       String sourceId, String layerId, Map<String, dynamic> properties,
       {String? belowLayerId, String? sourceLayer});
 
+  Future<void> addHeatmapLayer(
+      String sourceId, String layerId, Map<String, dynamic> properties,
+      {String? belowLayerId, String? sourceLayer});
+
   Future<void> addSource(String sourceId, SourceProperties properties);
 
   void dispose() {}

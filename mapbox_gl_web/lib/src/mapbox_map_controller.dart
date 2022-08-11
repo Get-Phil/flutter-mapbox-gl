@@ -844,6 +844,14 @@ class MapboxMapController extends MapboxGlPlatform
         belowLayerId: belowLayerId, sourceLayer: sourceLayer);
   }
 
+  @override
+  Future<void> addHeatmapLayer(
+      String sourceId, String layerId, Map<String, dynamic> properties,
+      {String? belowLayerId, String? sourceLayer}) async {
+    return _addLayer(sourceId, layerId, properties, "heatmap",
+        belowLayerId: belowLayerId, sourceLayer: sourceLayer);
+  }
+
   Future<void> _addLayer(String sourceId, String layerId,
       Map<String, dynamic> properties, String layerType,
       {String? belowLayerId, String? sourceLayer}) async {

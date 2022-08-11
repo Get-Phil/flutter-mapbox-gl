@@ -2070,3 +2070,56 @@ class HillshadeLayerProperties implements LayerProperties {
     );
   }
 }
+
+class HeatmapLayerProperties implements LayerProperties {
+  final dynamic heatmapOpacity;
+  final dynamic heatmapRadius;
+  final dynamic heatmapIntensity;
+  final dynamic heatmapColor;
+  final dynamic visibility;
+
+  const HeatmapLayerProperties({
+    this.heatmapOpacity,
+    this.heatmapRadius,
+    this.heatmapIntensity,
+    this.heatmapColor,
+    this.visibility,
+  });
+
+  HeatmapLayerProperties copyWith(HeatmapLayerProperties changes) {
+    return HeatmapLayerProperties(
+      heatmapOpacity: changes.heatmapOpacity ?? heatmapOpacity,
+      heatmapRadius: changes.heatmapRadius ?? heatmapRadius,
+      heatmapIntensity: changes.heatmapIntensity ?? heatmapIntensity,
+      heatmapColor: changes.heatmapColor ?? heatmapColor,
+      visibility: changes.visibility ?? visibility,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> json = <String, dynamic>{};
+
+    void addIfPresent(String fieldName, dynamic value) {
+      if (value != null) {
+        json[fieldName] = value;
+      }
+    }
+
+    addIfPresent('heatmap-opacity', heatmapOpacity);
+    addIfPresent('heatmap-radius', heatmapRadius);
+    addIfPresent('heatmap-intensity', heatmapIntensity);
+    addIfPresent('heatmap-color', heatmapColor);
+    addIfPresent('visibility', visibility);
+    return json;
+  }
+
+  factory HeatmapLayerProperties.fromJson(Map<String, dynamic> json) {
+    return HeatmapLayerProperties(
+      heatmapOpacity: json['heatmap-opacity'],
+      heatmapRadius: json['heatmap-radius'],
+      heatmapIntensity: json['heatmap-intensity'],
+      heatmapColor: json['heatmap-color'],
+      visibility: json['visibility'],
+    );
+  }
+}
