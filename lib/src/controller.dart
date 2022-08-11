@@ -411,7 +411,7 @@ class MapboxMapController extends ChangeNotifier {
   }
 
   Future<void> addHeatmapLayer(
-      String sourceId, String layerId, HillshadeLayerProperties properties,
+      String sourceId, String layerId, HeatmapLayerProperties properties,
       {String? belowLayerId, String? sourceLayer}) async {
     await _mapboxGlPlatform.addHeatmapLayer(
       sourceId,
@@ -1058,6 +1058,9 @@ class MapboxMapController extends ChangeNotifier {
           belowLayerId: belowLayerId, sourceLayer: sourceLayer);
     } else if (properties is HillshadeLayerProperties) {
       addHillshadeLayer(sourceId, layerId, properties,
+          belowLayerId: belowLayerId, sourceLayer: sourceLayer);
+    } else if (properties is HeatmapLayerProperties) {
+      addHeatmapLayer(sourceId, layerId, properties,
           belowLayerId: belowLayerId, sourceLayer: sourceLayer);
     } else {
       throw UnimplementedError("Unknown layer type $properties");
