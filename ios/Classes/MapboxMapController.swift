@@ -656,6 +656,20 @@ class MapboxMapController: NSObject, FlutterPlatformView, MGLMapViewDelegate, Ma
             )
             result(nil)
 
+        case "heatmapLayer#add":
+            guard let arguments = methodCall.arguments as? [String: Any] else { return }
+            guard let sourceId = arguments["sourceId"] as? String else { return }
+            guard let layerId = arguments["layerId"] as? String else { return }
+            guard let properties = arguments["properties"] as? [String: String] else { return }
+            let belowLayerId = arguments["belowLayerId"] as? String
+            addHeatmapLayer(
+                sourceId: sourceId,
+                layerId: layerId,
+                belowLayerId: belowLayerId,
+                properties: properties
+            )
+            result(nil)
+
         case "rasterLayer#add":
             guard let arguments = methodCall.arguments as? [String: Any] else { return }
             guard let sourceId = arguments["sourceId"] as? String else { return }
@@ -1395,6 +1409,29 @@ class MapboxMapController: NSObject, FlutterPlatformView, MGLMapViewDelegate, Ma
             }
         }
     }
+
+    func addHeatmapLayer(
+            sourceId: String,
+            layerId: String,
+            belowLayerId: String?,
+            properties: [String: String]
+        ) {
+            if let style = mapView.style {
+                if let source = style.source(withIdentifier: sourceId) {
+                    let layer = MGLHeatmapStyleLayer(identifier: layerId, source: source)
+                    LayerPropertyConverter.addHeatmapProperties(
+                        heatmapLayer: layer,
+                        properties: properties
+                    )
+                    if let id = belowLayerId, let belowLayer = style.layer(withIdentifier: id) {
+                        style.insertLayer(layer, below: belowLayer)
+                    } else {
+                        style.addLayer(layer)
+                    }
+                    featureLayerIdentifiers.insert(layerId)
+                }
+            }
+        }
 
     func addRasterLayer(
         sourceId: String,

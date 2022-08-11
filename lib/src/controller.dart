@@ -411,19 +411,14 @@ class MapboxMapController extends ChangeNotifier {
   }
 
   Future<void> addHeatmapLayer(
-      String sourceId, String layerId, HeatmapLayerProperties properties,
-      {String? belowLayerId,
-      String? sourceLayer,
-      double? minzoom,
-      double? maxzoom}) async {
+      String sourceId, String layerId, HillshadeLayerProperties properties,
+      {String? belowLayerId, String? sourceLayer}) async {
     await _mapboxGlPlatform.addHeatmapLayer(
       sourceId,
       layerId,
       properties.toJson(),
       belowLayerId: belowLayerId,
       sourceLayer: sourceLayer,
-      minzoom: minzoom,
-      maxzoom: maxzoom,
     );
   }
 

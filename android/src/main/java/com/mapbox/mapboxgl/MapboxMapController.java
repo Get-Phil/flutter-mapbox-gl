@@ -80,6 +80,7 @@ import com.mapbox.mapboxsdk.style.layers.FillLayer;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.layers.HillshadeLayer;
 import com.mapbox.mapboxsdk.style.layers.RasterLayer;
+import com.mapbox.mapboxsdk.style.layers.HeatmapLayer;
 
 import com.mapbox.mapboxsdk.style.layers.Property;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
@@ -538,12 +539,29 @@ final class MapboxMapController
     }
   }
 
-    private void addHillshadeLayer(String layerName,
+  private void addHillshadeLayer(String layerName,
                             String sourceName,
                             String belowLayerId,
                             PropertyValue[] properties,
                             Expression filter) {
     HillshadeLayer layer = new HillshadeLayer(layerName, sourceName);
+    layer.setProperties(properties);
+
+    if(belowLayerId != null){
+      style.addLayerBelow(layer, belowLayerId);
+    }
+    else
+    {
+      style.addLayer(layer);
+    }
+  }
+
+  private void addHeatmapLayer(String layerName,
+                                 String sourceName,
+                                 String belowLayerId,
+                                 PropertyValue[] properties,
+                                 Expression filter) {
+    HeatmapLayer layer = new HeatmapLayer(layerName, sourceName);
     layer.setProperties(properties);
 
     if(belowLayerId != null){
@@ -1281,6 +1299,15 @@ final class MapboxMapController
         final String belowLayerId = call.argument("belowLayerId");
         final PropertyValue[] properties = LayerPropertyConverter.interpretHillshadeLayerProperties(call.argument("properties"));
         addHillshadeLayer(layerId, sourceId, belowLayerId, properties, null);
+        result.success(null);
+        break;
+      }
+      case "heatmapLayer#add": {
+        final String sourceId = call.argument("sourceId");
+        final String layerId = call.argument("layerId");
+        final String belowLayerId = call.argument("belowLayerId");
+        final PropertyValue[] properties = LayerPropertyConverter.interpretHeatmapLayerProperties(call.argument("properties"));
+        addHeatmapLayer(layerId, sourceId, belowLayerId, properties, null);
         result.success(null);
         break;
       }

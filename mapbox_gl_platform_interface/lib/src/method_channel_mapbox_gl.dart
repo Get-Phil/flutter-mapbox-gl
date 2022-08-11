@@ -852,4 +852,17 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
           .map((key, value) => MapEntry<String, String>(key, jsonEncode(value)))
     });
   }
+
+  @override
+  Future<void> addHeatmapLayer(
+      String sourceId, String layerId, Map<String, dynamic> properties,
+      {String? belowLayerId, String? sourceLayer}) async {
+    await _channel.invokeMethod('heatmapLayer#add', <String, dynamic>{
+      'sourceId': sourceId,
+      'layerId': layerId,
+      'belowLayerId': belowLayerId,
+      'properties': properties
+          .map((key, value) => MapEntry<String, String>(key, jsonEncode(value)))
+    });
+  }
 }
