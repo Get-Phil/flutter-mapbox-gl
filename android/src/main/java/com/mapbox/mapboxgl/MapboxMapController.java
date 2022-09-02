@@ -557,13 +557,18 @@ final class MapboxMapController
   }
 
   private void addHeatmapLayer(String layerName,
-                                 String sourceName,
-                                 String belowLayerId,
-                                 PropertyValue[] properties,
-                                 Expression filter) {
+                              String sourceName,
+                              String belowLayerId,
+                              String sourceLayer,
+                              PropertyValue[] properties,
+                              Expression filter) {
     HeatmapLayer layer = new HeatmapLayer(layerName, sourceName);
     layer.setProperties(properties);
+    if(sourceLayer != null){
+      layer.setSourceLayer(sourceLayer);
+    }
 
+    featureLayerIdentifiers.add(layerName);
     if(belowLayerId != null){
       style.addLayerBelow(layer, belowLayerId);
     }
@@ -1306,8 +1311,9 @@ final class MapboxMapController
         final String sourceId = call.argument("sourceId");
         final String layerId = call.argument("layerId");
         final String belowLayerId = call.argument("belowLayerId");
+        final String sourceLayer = call.argument("sourceLayer");
         final PropertyValue[] properties = LayerPropertyConverter.interpretHeatmapLayerProperties(call.argument("properties"));
-        addHeatmapLayer(layerId, sourceId, belowLayerId, properties, null);
+        addHeatmapLayer(layerId, sourceId, belowLayerId, sourceLayer, properties, null);
         result.success(null);
         break;
       }
