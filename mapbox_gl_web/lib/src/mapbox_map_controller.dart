@@ -394,6 +394,7 @@ class MapboxMapController extends MapboxGlPlatform
   }
 
   Future<void> removeSource(String sourceId) async {
+    if (_map.getSource(sourceId) == null) return;
     _map.removeSource(sourceId);
   }
 

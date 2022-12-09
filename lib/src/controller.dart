@@ -229,6 +229,8 @@ class MapboxMapController extends ChangeNotifier {
   CameraPosition? get cameraPosition => _cameraPosition;
   CameraPosition? _cameraPosition;
 
+  bool isDisposed = false;
+
   void setCanvasShrinkageCallback(Function() callback) {
     return _mapboxGlPlatform.setCanvasShrinkageCallback(callback);
   }
@@ -1071,5 +1073,6 @@ class MapboxMapController extends ChangeNotifier {
   void dispose() {
     super.dispose();
     _mapboxGlPlatform.dispose();
+    isDisposed = true;
   }
 }
