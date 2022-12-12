@@ -8,21 +8,28 @@ This Flutter plugin allows to show embedded interactive and customizable vector 
 
 ![screenshot.png](screenshot.png)
 
+## Setting up
 
-## How to use
+This package is available on [pub.dev](https://pub.dev/packages/mapbox_gl).
 
-This project is available on [pub.dev](https://pub.dev/packages/mapbox_gl), follow the [instructions](https://flutter.dev/docs/development/packages-and-plugins/using-packages#adding-a-package-dependency-to-an-app) to add a package into your flutter application. 
+Get it by running the following command:
 
-### Private Mapbox access token
+```
+flutter pub add mapbox_gl
+```
 
-This project does require a Mapbox access token to download the underlying Android/iOS SDKs. The secret access token must have the *Download: read* scope for
-[Android](https://docs.mapbox.com/android/maps/guides/install/) and/or 
+### Mobile
+
+#### Secret Mapbox access token
+
+A secret access token with the `Downloads: Read` scope is required for the underlying Mapbox SDKs to be downloaded.
+Information on setting it up is available in the Mapbox documentation:
+[Android](https://docs.mapbox.com/android/maps/guides/install/),
 [iOS](https://docs.mapbox.com/ios/maps/guides/install/).
 
-If this configuration is not present, an error like the following appears during 
-the build process:
+If the properly configured token is not present,
+the build process fails with one the following errors *(for Android/iOS respectively)*:
 
-#### Android
 ```
 * What went wrong:
 A problem occurred evaluating project ':mapbox_gl'.
@@ -35,13 +42,46 @@ A problem occurred evaluating project ':mapbox_gl'.
 curl: (22) The requested URL returned error: 401 Unauthorized
 ```
 
-### Public Mapbox access token
+### Web
 
-Next to a private access token you will need to provide an public access token
-to retrieve the style and underlying resources. This can be done with running your application with an additional define statement:
+Include the JavaScript and CSS files in the `<head>` of your `index.html` file:
 
 ```
-flutter run -d {device_id} --dart-define=ACCESS_TOKEN=ADD_YOUR_TOKEN_HERE`
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css' rel='stylesheet' />
+```
+
+*Note: Look for latest version in [Mapbox GL JS documentation](https://docs.mapbox.com/mapbox-gl-js/guides/).*
+
+### All platforms
+
+#### Public Mapbox access token
+
+A public access token must be provided to a MapboxMap widget for retrieving styles and resources.
+While you can hardcode it directly into source files,
+it's good practise to retrieve access tokens from some external source
+(e.g. a config file or an environment variable).
+The example app uses the following technique:
+
+The access token is passed via the command line arguments when either building
+
+```
+flutter build <platform> --dart-define ACCESS_TOKEN=YOUR_TOKEN_HERE
+```
+
+or running the application
+
+```
+flutter run --dart-define ACCESS_TOKEN=YOUR_TOKEN_HERE
+```
+
+Then it's retrieved in Dart:
+```
+MapboxMap(
+  ...
+  accessToken: const String.fromEnvironment("ACCESS_TOKEN"),
+  ...
+)
 ```
 
 ## Supported API
@@ -53,13 +93,15 @@ flutter run -d {device_id} --dart-define=ACCESS_TOKEN=ADD_YOUR_TOKEN_HERE`
 | Gesture | :white_check_mark:   | :white_check_mark: | :white_check_mark: |
 | User Location | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | Style DSL   | :x:  | :x:  | :x:  |
-| Raster Layer  | :x:  | :x:  | :x: | 
+| Raster Layer  | :white_check_mark:  | :white_check_mark:  | :white_check_mark: | 
 | Symbol Layer | :white_check_mark:   | :white_check_mark: | :white_check_mark: |
 | Circle Layer | :white_check_mark:   | :white_check_mark: | :white_check_mark: |
 | Line Layer | :white_check_mark:   | :white_check_mark: | :white_check_mark: |
 | Fill Layer | :white_check_mark:   | :white_check_mark: | :white_check_mark: |
-| Vector Source   |  :x:  | :x:  | :x:  |
-| Raster Source  |  :x:  | :x:  | :x:  |   |   |   |   |
+| Hillshade Layer | :white_check_mark:   | :white_check_mark: | :white_check_mark: |
+| Heatmap Layer   | :x:  | :x:  | :x:  |
+| Vector Source   |  :white_check_mark:  | :white_check_mark:  | :white_check_mark:  |
+| Raster Source  |  :white_check_mark:  | :white_check_mark:  | :white_check_mark:  |
 | GeoJson Source  | :white_check_mark:   | :white_check_mark: | :white_check_mark: |
 | Image Source   | :white_check_mark:   | :white_check_mark: | :white_check_mark: |
 | Expressions   |  :white_check_mark:   | :white_check_mark: | :white_check_mark: |

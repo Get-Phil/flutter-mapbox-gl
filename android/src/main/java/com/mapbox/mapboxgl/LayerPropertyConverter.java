@@ -3,20 +3,16 @@
 
 package com.mapbox.mapboxgl;
 
-import com.mapbox.mapboxsdk.style.expressions.Expression;
-import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
-import com.mapbox.mapboxsdk.style.layers.PropertyValue;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import static com.mapbox.mapboxgl.Convert.toMap;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-
-
-import static com.mapbox.mapboxgl.Convert.toMap;
+import com.mapbox.mapboxsdk.style.expressions.Expression;
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
+import com.mapbox.mapboxsdk.style.layers.PropertyValue;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 class LayerPropertyConverter {
   static PropertyValue[] interpretSymbolLayerProperties(Object o) {
@@ -107,9 +103,9 @@ class LayerPropertyConverter {
           properties.add(PropertyFactory.iconTextFitPadding(expression));
           break;
         case "icon-image":
-          if(jsonElement.isJsonPrimitive() && jsonElement.getAsJsonPrimitive().isString()){
+          if (jsonElement.isJsonPrimitive() && jsonElement.getAsJsonPrimitive().isString()) {
             properties.add(PropertyFactory.iconImage(jsonElement.getAsString()));
-          }else{
+          } else {
             properties.add(PropertyFactory.iconImage(expression));
           }
           break;
@@ -457,37 +453,4 @@ class LayerPropertyConverter {
 
     return properties.toArray(new PropertyValue[properties.size()]);
   }
-
-  static PropertyValue[] interpretHeatmapLayerProperties(Object o) {
-    final Map<String, String> data = (Map<String, String>) toMap(o);
-    final List<PropertyValue> properties = new LinkedList();
-    final JsonParser parser = new JsonParser();
-
-    for (Map.Entry<String, String> entry : data.entrySet()) {
-      final JsonElement jsonElement = parser.parse(entry.getValue());
-      Expression expression = Expression.Converter.convert(jsonElement);
-      switch (entry.getKey()) {
-        case "heatmap-opacity":
-          properties.add(PropertyFactory.heatmapOpacity(expression));
-          break;
-        case "heatmap-radius":
-          properties.add(PropertyFactory.heatmapRadius(expression));
-          break;
-        case "heatmap-intensity":
-          properties.add(PropertyFactory.heatmapIntensity(expression));
-          break;
-        case "heatmap-color":
-          properties.add(PropertyFactory.heatmapColor(expression));
-          break;
-        case "visibility":
-          properties.add(PropertyFactory.visibility(entry.getValue()));
-          break;
-        default:
-          break;
-      }
-    }
-
-    return properties.toArray(new PropertyValue[properties.size()]);
-  }
-
 }

@@ -25,6 +25,7 @@ class MapboxMap extends StatefulWidget {
     this.zoomGesturesEnabled = true,
     this.tiltGesturesEnabled = true,
     this.doubleClickZoomEnabled,
+    this.dragEnabled = true,
     this.trackCameraPosition = false,
     this.myLocationEnabled = false,
     this.myLocationTrackingMode = MyLocationTrackingMode.None,
@@ -90,6 +91,12 @@ class MapboxMap extends StatefulWidget {
 
   /// True if the map should show a compass when rotated.
   final bool compassEnabled;
+
+  /// True if drag functionality should be enabled.
+  ///
+  /// Disable to avoid performance issues that from the drag event listeners.
+  /// Biggest impact in android
+  final bool dragEnabled;
 
   /// Geographical bounding box for the camera target.
   final CameraTargetBounds cameraTargetBounds;
@@ -215,6 +222,14 @@ class MapboxMap extends StatefulWidget {
   /// * All fade/transition animations have completed
   final OnMapIdleCallback? onMapIdle;
 
+  /// Set `MapboxMap.useHybridComposition` to `false` in order use Virtual-Display
+  /// (better for Android 9 and below but may result in errors on Android 12)
+  /// or leave it `true` (default) to use Hybrid composition (Slower on Android 9 and below).
+  static bool get useHybridComposition =>
+      MethodChannelMapboxGl.useHybridComposition;
+  static set useHybridComposition(bool useHybridComposition) =>
+      MethodChannelMapboxGl.useHybridComposition = useHybridComposition;
+
   @override
   State createState() => _MapboxMapState();
 }
@@ -231,20 +246,15 @@ class _MapboxMapState extends State<MapboxMap> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> annotationOrder =
-        widget.annotationOrder.map((e) => e.toString()).toList();
-    assert(annotationOrder.toSet().length == annotationOrder.length,
+    assert(
+        widget.annotationOrder.toSet().length == widget.annotationOrder.length,
         "annotationOrder must not have duplicate types");
-    final List<String> annotationConsumeTapEvents =
-        widget.annotationConsumeTapEvents.map((e) => e.toString()).toList();
-
     final Map<String, dynamic> creationParams = <String, dynamic>{
       'initialCameraPosition': widget.initialCameraPosition.toMap(),
       'options': _MapboxMapOptions.fromWidget(widget).toMap(),
       'accessToken': widget.accessToken,
-      'annotationOrder': annotationOrder,
-      'annotationConsumeTapEvents': annotationConsumeTapEvents,
       'onAttributionClickOverride': widget.onAttributionClick != null,
+      'dragEnabled': widget.dragEnabled
     };
     return _mapboxGlPlatform.buildView(
         creationParams, onPlatformViewCreated, widget.gestureRecognizers);
@@ -258,16 +268,10 @@ class _MapboxMapState extends State<MapboxMap> {
 
   @override
   void dispose() async {
+    super.dispose();
     if (_controller.isCompleted) {
-      if (!_styleLoaded) {
-        _needsDisposal = true;
-        return;
-      }
-      super.dispose();
       final controller = await _controller.future;
       controller.dispose();
-    } else {
-      super.dispose();
     }
   }
 
@@ -298,11 +302,6 @@ class _MapboxMapState extends State<MapboxMap> {
           if (widget.onStyleLoadedCallback != null) {
             widget.onStyleLoadedCallback!();
           }
-          // Dispose here if needed
-          _styleLoaded = true;
-          if (_needsDisposal) {
-            dispose();
-          }
         });
       },
       onMapClick: widget.onMapClick,
@@ -313,6 +312,8 @@ class _MapboxMapState extends State<MapboxMap> {
       onCameraTrackingChanged: widget.onCameraTrackingChanged,
       onCameraIdle: widget.onCameraIdle,
       onMapIdle: widget.onMapIdle,
+      annotationOrder: widget.annotationOrder,
+      annotationConsumeTapEvents: widget.annotationConsumeTapEvents,
     );
     await _mapboxGlPlatform.initPlatform(id);
     _controller.complete(controller);
