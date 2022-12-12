@@ -315,6 +315,7 @@ final class MapboxMapController
   private void addGeoJsonSource(String sourceName, String source) {
     FeatureCollection featureCollection = FeatureCollection.fromJson(source);
     GeoJsonSource geoJsonSource = new GeoJsonSource(sourceName, featureCollection);
+  }
 
   private void addGeoJsonSource(String sourceName, String source) {
     FeatureCollection featureCollection = FeatureCollection.fromJson(source);
