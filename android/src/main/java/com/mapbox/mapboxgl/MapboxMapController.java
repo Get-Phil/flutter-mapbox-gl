@@ -557,28 +557,6 @@ final class MapboxMapController
     }
   }
 
-  private void addHeatmapLayer(String layerName,
-                              String sourceName,
-                              String belowLayerId,
-                              String sourceLayer,
-                              PropertyValue[] properties,
-                              Expression filter) {
-    HeatmapLayer layer = new HeatmapLayer(layerName, sourceName);
-    layer.setProperties(properties);
-    if(sourceLayer != null){
-      layer.setSourceLayer(sourceLayer);
-    }
-
-    featureLayerIdentifiers.add(layerName);
-    if(belowLayerId != null){
-      style.addLayerBelow(layer, belowLayerId);
-    }
-    else
-    {
-      style.addLayer(layer);
-    }
-  }
-
   private Expression parseFilter(String filter) {
     JsonParser parser = new JsonParser();
     JsonElement filterJsonElement = parser.parse(filter);
@@ -1114,16 +1092,6 @@ final class MapboxMapController
           result.success(null);
           break;
         }
-      case "heatmapLayer#add": {
-        final String sourceId = call.argument("sourceId");
-        final String layerId = call.argument("layerId");
-        final String belowLayerId = call.argument("belowLayerId");
-        final String sourceLayer = call.argument("sourceLayer");
-        final PropertyValue[] properties = LayerPropertyConverter.interpretHeatmapLayerProperties(call.argument("properties"));
-        addHeatmapLayer(layerId, sourceId, belowLayerId, sourceLayer, properties, null);
-        result.success(null);
-        break;
-      }
       case "heatmapLayer#add":
         {
           final String sourceId = call.argument("sourceId");
