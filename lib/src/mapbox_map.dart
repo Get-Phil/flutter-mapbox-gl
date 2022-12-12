@@ -226,6 +226,9 @@ class _MapboxMapState extends State<MapboxMap> {
   late _MapboxMapOptions _mapboxMapOptions;
   final MapboxGlPlatform _mapboxGlPlatform = MapboxGlPlatform.createInstance();
 
+  bool _styleLoaded = false;
+  bool _needsDisposal = false;
+
   @override
   Widget build(BuildContext context) {
     final List<String> annotationOrder =
@@ -255,10 +258,16 @@ class _MapboxMapState extends State<MapboxMap> {
 
   @override
   void dispose() async {
-    super.dispose();
     if (_controller.isCompleted) {
+      if (!_styleLoaded) {
+        _needsDisposal = true;
+        return;
+      }
+      super.dispose();
       final controller = await _controller.future;
       controller.dispose();
+    } else {
+      super.dispose();
     }
   }
 
@@ -288,6 +297,11 @@ class _MapboxMapState extends State<MapboxMap> {
         _controller.future.then((_) {
           if (widget.onStyleLoadedCallback != null) {
             widget.onStyleLoadedCallback!();
+          }
+          // Dispose here if needed
+          _styleLoaded = true;
+          if (_needsDisposal) {
+            dispose();
           }
         });
       },
