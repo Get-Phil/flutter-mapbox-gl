@@ -235,6 +235,10 @@ class MapboxMapController extends ChangeNotifier {
   bool get isCameraMoving => _isCameraMoving;
   bool _isCameraMoving = false;
 
+  void setCanvasShrinkageCallback(Function() callback) {
+    return _mapboxGlPlatform.setCanvasShrinkageCallback(callback);
+  }
+
   /// Returns the most recent camera position reported by the platform side.
   /// Will be null, if [MapboxMap.trackCameraPosition] is false.
   CameraPosition? get cameraPosition => _cameraPosition;
