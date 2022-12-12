@@ -615,10 +615,16 @@ final class MapboxMapController
       Float minZoom,
       Float maxZoom,
       String belowLayerId,
+      String sourceLayer,
       PropertyValue[] properties,
       Expression filter) {
     HeatmapLayer layer = new HeatmapLayer(layerName, sourceName);
     layer.setProperties(properties);
+     if(sourceLayer != null){
+      layer.setSourceLayer(sourceLayer);
+    }
+
+    interactiveFeatureLayerIds.add(layerName);
     if (minZoom != null) {
       layer.setMinZoom(minZoom);
     }
@@ -1097,6 +1103,7 @@ final class MapboxMapController
           final String sourceId = call.argument("sourceId");
           final String layerId = call.argument("layerId");
           final String belowLayerId = call.argument("belowLayerId");
+          final String sourceLayer = call.argument("sourceLayer");
           final Double minzoom = call.argument("minzoom");
           final Double maxzoom = call.argument("maxzoom");
           final PropertyValue[] properties =
@@ -1107,6 +1114,7 @@ final class MapboxMapController
               minzoom != null ? minzoom.floatValue() : null,
               maxzoom != null ? maxzoom.floatValue() : null,
               belowLayerId,
+              sourceLayer,
               properties,
               null);
           updateLocationComponentLayer();

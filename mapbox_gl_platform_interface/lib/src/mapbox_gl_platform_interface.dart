@@ -102,6 +102,11 @@ abstract class MapboxGlPlatform {
 
   Future<double> getMetersPerPixelAtLatitude(double latitude);
 
+  void setCanvasShrinkageCallback(Function() callback) {
+    throw UnimplementedError(
+        'setCanvasShrinkageCallback() has not been implemented.');
+  }
+
   Future<void> addGeoJsonSource(String sourceId, Map<String, dynamic> geojson,
       {String? promoteId});
 

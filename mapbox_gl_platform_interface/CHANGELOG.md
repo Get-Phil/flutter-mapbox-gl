@@ -1,4 +1,4 @@
-## 0.16.0, May 19, 2022
+## 0.16.1, May 19, 2022
 * Annotation manager moved to dart [#779](https://github.com/flutter-mapbox-gl/maps/pull/779)
 * Fix issue with map disposal on web [#895](https://github.com/flutter-mapbox-gl/maps/pull/895)
 * Add support for layer zoom limits [#934](https://github.com/flutter-mapbox-gl/maps/pull/934)

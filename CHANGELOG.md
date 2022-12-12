@@ -1,4 +1,4 @@
-## 0.16.0, May 19, 2022
+## 0.16.1, May 19, 2022
 * Fix type issues in query rendered features in rect [#862](https://github.com/flutter-mapbox-gl/maps/pull/862)
 * Annotation manager moved to dart [#779](https://github.com/flutter-mapbox-gl/maps/pull/779)
 * Add java formatting [#863](https://github.com/flutter-mapbox-gl/maps/pull/863)

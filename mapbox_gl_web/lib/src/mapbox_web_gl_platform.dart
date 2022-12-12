@@ -26,6 +26,9 @@ class MapboxWebGlPlatform extends MapboxGlPlatform
   NavigationControl? _navigationControl;
   Timer? lastResizeObserverTimer;
 
+  Function()? _canvasShrinkage;
+  bool _didRender = false;
+
   @override
   Widget buildView(
       Map<String, dynamic> creationParams,
@@ -86,6 +89,10 @@ class MapboxWebGlPlatform extends MapboxGlPlatform
       _map.on('move', _onCameraMove);
       _map.on('moveend', _onCameraIdle);
       _map.on('resize', (_) => _onMapResize());
+      _map.on('render', () {
+        _didRender = true;
+        _map.resize();
+      });
       _map.on('styleimagemissing', _loadFromAssets);
       if (_dragEnabled) {
         _map.on('mouseup', _onMouseUp);
@@ -355,7 +362,12 @@ class MapboxWebGlPlatform extends MapboxGlPlatform
   }
 
   @override
+  void setCanvasShrinkageCallback(Function() callback) {
+    _canvasShrinkage = callback;
+  }
+
   Future<void> removeSource(String sourceId) async {
+    if (_map.getSource(sourceId) == null) return;
     _map.removeSource(sourceId);
   }
 
@@ -386,6 +398,10 @@ class MapboxWebGlPlatform extends MapboxGlPlatform
       var heightMismatch = canvas.clientHeight != container.clientHeight;
       if (widthMismatch || heightMismatch) {
         _map.resize();
+      }
+      if (_canvasShrinkage != null &&
+          (canvas.clientHeight == 0 || canvas.clientWidth == 0)) {
+        _canvasShrinkage!();
       }
     });
   }

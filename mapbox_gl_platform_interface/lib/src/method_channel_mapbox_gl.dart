@@ -749,6 +749,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       'belowLayerId': belowLayerId,
       'minzoom': minzoom,
       'maxzoom': maxzoom,
+      'sourceLayer': sourceLayer,
       'properties': properties
           .map((key, value) => MapEntry<String, String>(key, jsonEncode(value)))
     });
@@ -778,5 +779,10 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
     } on PlatformException catch (e) {
       return new Future.error(e);
     }
+  }
+
+  @override
+  void setCanvasShrinkageCallback(Function() callback) {
+    // Not needed in native
   }
 }

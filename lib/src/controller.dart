@@ -244,6 +244,10 @@ class MapboxMapController extends ChangeNotifier {
   CameraPosition? get cameraPosition => _cameraPosition;
   CameraPosition? _cameraPosition;
 
+  void setCanvasShrinkageCallback(Function() callback) {
+    return _mapboxGlPlatform.setCanvasShrinkageCallback(callback);
+  }
+
   final MapboxGlPlatform _mapboxGlPlatform; //ignore: unused_field
 
   /// Updates configuration options of the map user interface.
