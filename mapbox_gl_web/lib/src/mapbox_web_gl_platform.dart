@@ -205,22 +205,7 @@ class MapboxWebGlPlatform extends MapboxGlPlatform
   Future<bool?> animateCamera(CameraUpdate cameraUpdate,
       {Duration? duration}) async {
     final cameraOptions = Convert.toCameraOptions(cameraUpdate, _map);
-
-    final around = getProperty(cameraOptions, 'around');
-    final bearing = getProperty(cameraOptions, 'bearing');
-    final center = getProperty(cameraOptions, 'center');
-    final pitch = getProperty(cameraOptions, 'pitch');
-    final zoom = getProperty(cameraOptions, 'zoom');
-
-    _map.flyTo({
-      if (around != null) 'around': around,
-      if (bearing != null) 'bearing': bearing,
-      if (center != null) 'center': center,
-      if (pitch != null) 'pitch': pitch,
-      if (zoom != null) 'zoom': zoom,
-      if (duration != null) 'duration': duration.inMilliseconds,
-    });
-
+    _map.flyTo(cameraOptions);
     return true;
   }
 
