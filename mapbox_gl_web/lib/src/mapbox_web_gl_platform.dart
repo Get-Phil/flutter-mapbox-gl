@@ -213,9 +213,9 @@ class MapboxWebGlPlatform extends MapboxGlPlatform
     final zoom = getProperty(cameraOptions, 'zoom');
 
     _map.flyTo({
-      if (around.jsObject != null) 'around': around,
+      if (around != null && around.jsObject != null) 'around': around,
       if (bearing != null) 'bearing': bearing,
-      if (center.jsObject != null) 'center': center,
+      if (center != null && center.jsObject != null) 'center': center,
       if (pitch != null) 'pitch': pitch,
       if (zoom != null) 'zoom': zoom,
       if (duration != null) 'duration': duration.inMilliseconds,
